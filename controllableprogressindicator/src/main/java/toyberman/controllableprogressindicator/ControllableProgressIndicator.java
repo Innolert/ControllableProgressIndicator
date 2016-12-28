@@ -12,13 +12,18 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import toyberman.controllableprogressindicator.Utils.GeneralUtils;
 
 /**
- * Created by maximtoyberman on 12/28/16.
+ * Created by Maxim Toyberman on 12/28/16.
  */
 
 public class ControllableProgressIndicator extends View {
+
     /**
      * minimal dots gap
      */
@@ -28,6 +33,15 @@ public class ControllableProgressIndicator extends View {
      */
     private final int DEFAULT_DOT_SIZE = 8;
     private final int DEFAULT_NUMBER_FONT_SIZE = 6;
+    /**
+     * Selected pages set
+     */
+    private Set<Integer> mSelectedPages;
+    /**
+     * Done pages set
+     */
+    private Set<Integer> mDonePages;
+
     /**
      * Number of drawn dots on the screen
      */
@@ -57,10 +71,17 @@ public class ControllableProgressIndicator extends View {
      */
     private int mNumberFontSize;
 
+    private Paint mDonePaint;
     private Paint mUnselectedPaint;
+    private Paint mSelectedPaint;
     private Paint mNumbersPaint;
-
+    /**
+     * Drawable bitmaps, circle shapes
+     */
     private Bitmap mUnSelectedItemBitmap;
+    private Bitmap mSelectedItemBitmap;
+    private Bitmap mDoneItemBitmap;
+
     private int mDotTopY;
     private int mDotCenterY;
     private int mDotBottomY;
@@ -83,6 +104,23 @@ public class ControllableProgressIndicator extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawUnselected(canvas, mUnselectedPaint);
+        drawSelected(canvas, mSelectedPaint);
+        drawDone(canvas,mDonePaint);
+    }
+
+    private void drawDone(Canvas canvas, Paint mDonePaint) {
+        for (Integer page: mDonePages) {
+            canvas.drawBitmap(mDoneItemBitmap,dotCenterX[page],mDotTopY,mDonePaint);
+        }
+    }
+
+    private void drawSelected(Canvas canvas, Paint mSelectedPaint) {
+        float dist = ((mSelectedPaint.descent() + mSelectedPaint.ascent()) / 2);
+
+        for (Integer page: mSelectedPages) {
+            canvas.drawBitmap(mSelectedItemBitmap,dotCenterX[page],mDotTopY,mSelectedPaint);
+            canvas.drawText("" + (page +1), dotCenterX[page] + mDotRadius + dist, mDotTopY + mDotRadius - dist, mSelectedPaint);
+        }
     }
 
     private void drawUnselected(Canvas canvas, Paint mUnselectedPaint) {
@@ -93,20 +131,60 @@ public class ControllableProgressIndicator extends View {
             test.setStrokeWidth(30);
             canvas.drawBitmap(mUnSelectedItemBitmap, dotCenterX[page], mDotTopY, mUnselectedPaint);
             float dist = ((mNumbersPaint.descent() + mNumbersPaint.ascent()) / 2);
-            canvas.drawText(""+page,dotCenterX[page]+mDotRadius +dist,mDotTopY +mDotRadius - dist,mNumbersPaint);
-            if(page == mDotsNumber -1){
-
-            }
-            else{
-                canvas.drawLine(dotCenterX[page] +mDotDiameter, mDotRadius, dotCenterX[page] + mDotDiameter + mDotGap, mDotRadius, mUnselectedPaint);
+            canvas.drawText("" + (page +1), dotCenterX[page] + mDotRadius + dist, mDotTopY + mDotRadius - dist, mNumbersPaint);
+            if (page == mDotsNumber - 1) {
+                //last page
+            } else {
+                canvas.drawLine(dotCenterX[page] + mDotDiameter -2, mDotRadius, dotCenterX[page] + mDotDiameter + mDotGap +1, mDotRadius , mUnselectedPaint);
             }
         }
     }
 
+    public void setDonePage(int page){
+        if(page<0 ||page > mDotsNumber)
+            throw new IndexOutOfBoundsException(getContext().getString(R.string.out_of_bounds));
+
+        mDonePages.add(page);
+        invalidate();
+    }
+
+    public void setSelectedPage(int page) {
+        if(page<0 ||page > mDotsNumber)
+            throw new IndexOutOfBoundsException(getContext().getString(R.string.out_of_bounds));
+        
+        mSelectedPages.add(page);
+        invalidate();
+    }
+
+    public void setSelectedPages(int [] pages){
+        for (int page:pages) {
+            setSelectedPage(page);
+        }
+    }
+
+    public void setUnSelectedPage(int page){
+        if(mSelectedPages.contains(page)){
+            mSelectedPages.remove(page);
+            invalidate();
+        }
+    }
+
+    public void setUnSelectedPages(int [] pages){
+        for (int page:pages) {
+            setUnSelectedPage(page);
+        }
+    }
+
     private void initPainters() {
+        mDonePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        //unSelected circles paint
         mUnselectedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mUnselectedPaint.setColor(Color.parseColor("#c2c2c2"));
         mUnselectedPaint.setStrokeWidth(25);
+        //Selected circles paint
+        mSelectedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mSelectedPaint.setColor(Color.parseColor("#009edd"));
+        mSelectedPaint.setTextSize(mNumberFontSize);
         //Numbers paint
         mNumbersPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         int alpha = (int) (0.31 * 255.0f);
@@ -117,6 +195,9 @@ public class ControllableProgressIndicator extends View {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
+        mSelectedPages = new HashSet<>();
+        mDonePages = new HashSet<>();
+
         mDensity = (int) context.getResources().getDisplayMetrics().density;
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ControllableProgressIndicator);
 
@@ -128,7 +209,8 @@ public class ControllableProgressIndicator extends View {
         typedArray.recycle();
 
         mUnSelectedItemBitmap = GeneralUtils.drawableToBitmap(ContextCompat.getDrawable(getContext(), R.drawable.nonselecteditem_dot));
-
+        mSelectedItemBitmap = GeneralUtils.drawableToBitmap(ContextCompat.getDrawable(getContext(), R.drawable.selecteditem_dot));
+        mDoneItemBitmap = GeneralUtils.drawableToBitmap(ContextCompat.getDrawable(getContext(),R.drawable.doneitem_dot));
     }
 
     private int getRequiredWidth() {

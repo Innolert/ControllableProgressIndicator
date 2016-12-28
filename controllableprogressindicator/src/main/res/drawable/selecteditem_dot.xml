@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <inset xmlns:android="http://schemas.android.com/apk/res/android"
+            android:insetBottom="4.333333333dip"
+            android:insetLeft="4.333333333dip" android:insetRight="4.333333333dip" android:insetTop="4.333333333dip"
+            android:visible="true" >
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:dither="true"
+            android:shape="oval"
+
+            android:useLevel="true">
+
+            <size
+                android:width="36dp"
+                android:height="36dp" />
+            <solid android:color="#ebebeb" />
+        </shape>
+        </inset>
+    </item>
+
+    <item android:bottom="3px">
+
+        <shape  android:shape="oval">
+
+            <solid android:color="#FFFFFF" />
+            <corners android:radius="7dp" />
+
+
+        </shape>
+
+    </item>
+
+</layer-list>

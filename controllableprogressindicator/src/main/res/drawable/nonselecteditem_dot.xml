@@ -6,10 +6,18 @@
                 android:shape="oval"
                 android:useLevel="true">
 
+                <gradient
+                    android:angle="90"
+                    android:endColor="#7f444444"
+                    android:startColor="#7fbbbbbb"
+                    android:type="linear" />
+
+                <corners
+                    android:radius="0dp"/>
+
                 <size
                     android:width="44.333333333dp"
                     android:height="44.333333333dp" />
-                <solid android:color="#c2c2c2" />
             </shape>
     </item>
 </layer-list>
