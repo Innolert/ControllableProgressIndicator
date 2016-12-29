@@ -126,7 +126,7 @@ public class ControllableProgressIndicator extends View {
     }
 
     private void drawUnselected(Canvas canvas, Paint mUnselectedPaint) {
-
+        int paddingTop = getPaddingTop();
         for (int page = 0; page < mDotsNumber; page++) {
             Paint test = new Paint();
             test.setColor(Color.BLACK);
@@ -137,7 +137,7 @@ public class ControllableProgressIndicator extends View {
             if (page == mDotsNumber - 1) {
                 //last page
             } else {
-                canvas.drawLine(dotCenterX[page] + mDotDiameter - 2, mDotRadius, dotCenterX[page] + mDotDiameter + mDotGap + 1, mDotRadius, mUnselectedPaint);
+                canvas.drawLine(dotCenterX[page] + mDotDiameter - 2, mDotRadius +paddingTop, dotCenterX[page] + mDotDiameter + mDotGap + 1, mDotRadius+paddingTop, mUnselectedPaint);
             }
         }
     }

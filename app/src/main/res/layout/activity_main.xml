@@ -12,6 +12,7 @@
     tools:context="toyberman.customprogressidicator.MainActivity">
 
     <toyberman.controllableprogressindicator.ControllableProgressIndicator
+        android:paddingTop="5dp"
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
