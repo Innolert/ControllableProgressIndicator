@@ -107,6 +107,9 @@ public class ControllableProgressIndicator extends View {
         drawDone(canvas, mDonePaint);
     }
 
+    public int getNumOfDots(){
+        return mDotsNumber;
+    }
     private void drawDone(Canvas canvas, Paint mDonePaint) {
         for (Integer page : mDonePages) {
             canvas.drawBitmap(mDoneItemBitmap, dotCenterX[page] + 8, mDotTopY + 8, mDonePaint);
@@ -140,38 +143,66 @@ public class ControllableProgressIndicator extends View {
     }
 
     public void setDonePage(int page) {
-        if (page < 0 || page > mDotsNumber)
-            throw new IndexOutOfBoundsException(getContext().getString(R.string.out_of_bounds));
-
-        mDonePages.add(page);
+        addDone(page);
         invalidate();
     }
 
-    public void setSelectedPage(int page) {
+    public void setDonePages(int [] pages) {
+        for (int page:pages) {
+            addDone(page);
+        }
+        invalidate();
+    }
+
+    private void addDone(int page) {
         if (page < 0 || page > mDotsNumber)
             throw new IndexOutOfBoundsException(getContext().getString(R.string.out_of_bounds));
+        mDonePages.add(page);
+    }
 
-        mSelectedPages.add(page);
+    public void setSelectedPage(int page) {
+        addSelected(page);
         invalidate();
     }
 
     public void setSelectedPages(int[] pages) {
         for (int page : pages) {
-            setSelectedPage(page);
+            addSelected(page);
         }
+        invalidate();
+    }
+
+    private void addSelected(int page) {
+        if (page < 0 || page > mDotsNumber)
+            throw new IndexOutOfBoundsException(getContext().getString(R.string.out_of_bounds));
+
+        mSelectedPages.add(page);
     }
 
     public void setUnSelectedPage(int page) {
         if (mSelectedPages.contains(page)) {
-            mSelectedPages.remove(page);
+            removeSelected(page);
             invalidate();
         }
     }
 
+    private void removeSelected(int page) {
+        if (page < 0 || page > mDotsNumber)
+            throw new IndexOutOfBoundsException(getContext().getString(R.string.out_of_bounds));
+
+        mSelectedPages.remove(page);
+    }
+
     public void setUnSelectedPages(int[] pages) {
         for (int page : pages) {
-            setUnSelectedPage(page);
+            removeSelected(page);
         }
+        invalidate();
+    }
+
+    public void clearSelected(){
+        mSelectedPages.clear();
+        invalidate();
     }
 
     private void initPainters() {
