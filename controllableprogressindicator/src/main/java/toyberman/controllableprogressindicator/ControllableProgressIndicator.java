@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -105,21 +104,21 @@ public class ControllableProgressIndicator extends View {
         super.onDraw(canvas);
         drawUnselected(canvas, mUnselectedPaint);
         drawSelected(canvas, mSelectedPaint);
-        drawDone(canvas,mDonePaint);
+        drawDone(canvas, mDonePaint);
     }
 
     private void drawDone(Canvas canvas, Paint mDonePaint) {
-        for (Integer page: mDonePages) {
-            canvas.drawBitmap(mDoneItemBitmap,dotCenterX[page],mDotTopY,mDonePaint);
+        for (Integer page : mDonePages) {
+            canvas.drawBitmap(mDoneItemBitmap, dotCenterX[page] + 8, mDotTopY + 8, mDonePaint);
         }
     }
 
     private void drawSelected(Canvas canvas, Paint mSelectedPaint) {
         float dist = ((mSelectedPaint.descent() + mSelectedPaint.ascent()) / 2);
 
-        for (Integer page: mSelectedPages) {
-            canvas.drawBitmap(mSelectedItemBitmap,dotCenterX[page],mDotTopY,mSelectedPaint);
-            canvas.drawText("" + (page +1), dotCenterX[page] + mDotRadius + dist, mDotTopY + mDotRadius - dist, mSelectedPaint);
+        for (Integer page : mSelectedPages) {
+            canvas.drawBitmap(mSelectedItemBitmap, dotCenterX[page], mDotTopY, mSelectedPaint);
+            canvas.drawText("" + (page + 1), dotCenterX[page] + mDotRadius + dist, mDotTopY + mDotRadius - dist, mSelectedPaint);
         }
     }
 
@@ -131,17 +130,17 @@ public class ControllableProgressIndicator extends View {
             test.setStrokeWidth(30);
             canvas.drawBitmap(mUnSelectedItemBitmap, dotCenterX[page], mDotTopY, mUnselectedPaint);
             float dist = ((mNumbersPaint.descent() + mNumbersPaint.ascent()) / 2);
-            canvas.drawText("" + (page +1), dotCenterX[page] + mDotRadius + dist, mDotTopY + mDotRadius - dist, mNumbersPaint);
+            canvas.drawText("" + (page + 1), dotCenterX[page] + mDotRadius + dist, mDotTopY + mDotRadius - dist, mNumbersPaint);
             if (page == mDotsNumber - 1) {
                 //last page
             } else {
-                canvas.drawLine(dotCenterX[page] + mDotDiameter -2, mDotRadius, dotCenterX[page] + mDotDiameter + mDotGap +1, mDotRadius , mUnselectedPaint);
+                canvas.drawLine(dotCenterX[page] + mDotDiameter - 2, mDotRadius, dotCenterX[page] + mDotDiameter + mDotGap + 1, mDotRadius, mUnselectedPaint);
             }
         }
     }
 
-    public void setDonePage(int page){
-        if(page<0 ||page > mDotsNumber)
+    public void setDonePage(int page) {
+        if (page < 0 || page > mDotsNumber)
             throw new IndexOutOfBoundsException(getContext().getString(R.string.out_of_bounds));
 
         mDonePages.add(page);
@@ -149,28 +148,28 @@ public class ControllableProgressIndicator extends View {
     }
 
     public void setSelectedPage(int page) {
-        if(page<0 ||page > mDotsNumber)
+        if (page < 0 || page > mDotsNumber)
             throw new IndexOutOfBoundsException(getContext().getString(R.string.out_of_bounds));
-        
+
         mSelectedPages.add(page);
         invalidate();
     }
 
-    public void setSelectedPages(int [] pages){
-        for (int page:pages) {
+    public void setSelectedPages(int[] pages) {
+        for (int page : pages) {
             setSelectedPage(page);
         }
     }
 
-    public void setUnSelectedPage(int page){
-        if(mSelectedPages.contains(page)){
+    public void setUnSelectedPage(int page) {
+        if (mSelectedPages.contains(page)) {
             mSelectedPages.remove(page);
             invalidate();
         }
     }
 
-    public void setUnSelectedPages(int [] pages){
-        for (int page:pages) {
+    public void setUnSelectedPages(int[] pages) {
+        for (int page : pages) {
             setUnSelectedPage(page);
         }
     }
@@ -210,7 +209,7 @@ public class ControllableProgressIndicator extends View {
 
         mUnSelectedItemBitmap = GeneralUtils.drawableToBitmap(ContextCompat.getDrawable(getContext(), R.drawable.nonselecteditem_dot));
         mSelectedItemBitmap = GeneralUtils.drawableToBitmap(ContextCompat.getDrawable(getContext(), R.drawable.selecteditem_dot));
-        mDoneItemBitmap = GeneralUtils.drawableToBitmap(ContextCompat.getDrawable(getContext(),R.drawable.doneitem_dot));
+        mDoneItemBitmap = GeneralUtils.drawableToBitmap(ContextCompat.getDrawable(getContext(), R.drawable.doneitem_dot));
     }
 
     private int getRequiredWidth() {
