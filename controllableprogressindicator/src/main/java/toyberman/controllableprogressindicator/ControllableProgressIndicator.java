@@ -112,7 +112,7 @@ public class ControllableProgressIndicator extends View {
     }
     private void drawDone(Canvas canvas, Paint mDonePaint) {
         for (Integer page : mDonePages) {
-            canvas.drawBitmap(mDoneItemBitmap, dotCenterX[page] + 8, mDotTopY + 8, mDonePaint);
+            canvas.drawBitmap(mDoneItemBitmap, dotCenterX[page], mDotTopY, mDonePaint);
         }
     }
 
