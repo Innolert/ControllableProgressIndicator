@@ -1,23 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
+
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:dither="true"
             android:shape="oval"
             android:useLevel="true">
 
-            <size
-                android:width="38dp"
-                android:height="38dp" />
-            <solid android:color="#089dd8" />
+            <corners android:radius="0dp" />
 
+            <size
+                android:width="44.333333333dp"
+                android:height="44.333333333dp" />
         </shape>
     </item>
-    <item >
+    <item>
         <inset xmlns:android="http://schemas.android.com/apk/res/android"
             android:insetBottom="3dip"
-            android:insetLeft="3dip" android:insetRight="3dip" android:insetTop="3dip"
-            >
+            android:insetLeft="3dip"
+            android:insetRight="3dip"
+            android:insetTop="3dip">
+            <shape xmlns:android="http://schemas.android.com/apk/res/android"
+                android:dither="true"
+                android:shape="oval"
+                android:useLevel="true">
+
+                <size
+                    android:width="38dp"
+                    android:height="38dp" />
+                <solid android:color="#089dd8" />
+
+            </shape>
+        </inset>
+    </item>
+    <item>
+        <inset xmlns:android="http://schemas.android.com/apk/res/android"
+            android:insetBottom="3dip"
+            android:insetLeft="3dip"
+            android:insetRight="3dip"
+            android:insetTop="3dip">
             <shape xmlns:android="http://schemas.android.com/apk/res/android"
                 android:dither="true"
                 android:shape="oval"
@@ -32,11 +53,12 @@
             </shape>
         </inset>
     </item>
-    <item >
+    <item>
         <inset xmlns:android="http://schemas.android.com/apk/res/android"
             android:insetBottom="3dip"
-            android:insetLeft="3dip" android:insetRight="3dip" android:insetTop="3dip"
-            >
+            android:insetLeft="3dip"
+            android:insetRight="3dip"
+            android:insetTop="3dip">
             <shape xmlns:android="http://schemas.android.com/apk/res/android"
                 android:dither="true"
                 android:shape="oval"
@@ -51,7 +73,7 @@
             </shape>
         </inset>
     </item>
-    <item android:drawable="@drawable/ic_check_white_24dp"/>
+    <item android:drawable="@drawable/ic_check_white_24dp" />
 
 
 </layer-list>
